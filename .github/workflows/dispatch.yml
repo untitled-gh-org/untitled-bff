@@ -1,0 +1,27 @@
+name: dispatch
+
+on:
+  workflow_run:
+    workflows:
+      - ci
+    types:
+      - completed
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Repository Dispatch
+        uses: peter-evans/repository-dispatch@v4
+        with:
+          token: ${{ secrets.PAT }}
+          repository: '${{ github.repository }}'
+          event-type: delivery
+          client-payload: '{
+            "image": "ghcr.io/${{ github.repository }}",
+            "version": "${{ github.sha }}"
+          }'

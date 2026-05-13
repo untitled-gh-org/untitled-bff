@@ -1,6 +1,7 @@
 bff:
   home-url: http://localhost:5173
   client-url: http://localhost:8081
+  login-url: ${bff.client-url}/oauth2/authorization/untitled-bff
 
 server:
   port: 8081
